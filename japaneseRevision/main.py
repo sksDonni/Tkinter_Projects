@@ -1,12 +1,27 @@
 from tkinter import *
 from PIL import Image, ImageTk
-
+from hiragana import HiraganaAlphabet
+import io
 
 def hiragana_method():
     hira_root = Tk()
     hira_root.title("Sensei - Hiragana")
+    filename = "arrayOfAlphabets.txt"
 
+    hiragana_alphabet_frame = Frame(hira_root)
+    hiragana_alphabet_frame.pack(padx=50, pady=50)
+    # alphabet_file = open("arrayOfAlphabets.txt", "r")
+    with io.open(filename, "r", encoding="utf-8") as f:
+        text = f.read()
 
+    alphas = []
+    for te in text:
+        if te == "," or te == ' ':
+            continue
+        else:
+            alphas.append(te)
+
+    HiraganaAlphabet(hiragana_alphabet_frame, alphas)
 
     hira_root.mainloop()
 
