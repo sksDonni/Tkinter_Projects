@@ -1,18 +1,17 @@
 from tkinter import *
 from PIL import Image, ImageTk
 
-class HiraganaAlphabet:
+class KatakanaaAlphabet:
 
     def __init__(self, root, text):
         self.root = root
         self.text = text
         i = 0
         k = 0
-        global j
         j = 0
 
         for j in range(0, len(text)):
-            if text[j].encode("utf-8") == "が".encode("utf-8"):
+            if text[j].encode("utf-8") == "ガ".encode("utf-8"):
                 for i in range(0, 10):
                     dash = Label(root, text="||")
                     dash.grid(row=i, column=5)
