@@ -4,78 +4,60 @@
 # import statements - In this application we are using the Tkinter python module
 from tkinter import *
 from PIL import Image, ImageTk
-from hiragana import HiraganaAlphabet
-import io
+from hiragana import PrintAlphabet
 
 
 # Methods for implementing commands from the button widgets
 
-# the hiragana_method creates a new window to display the hiragana characters.
-def hiragana_method():
-    hira_root = Tk()
-    hira_root.title("Sensei - Hiragana")
-    filename = "arrayOfHiraganaAlphabets.txt"
+# the alphabet_method creates a new window to display the hiragana characters.
+def alphabet_method():
+    alphabet_root = Tk()
+    alphabet_root.title("Sensei - Hiragana and katakana")
+    alphabet_root.resizable(0, 0)
+    P = PrintAlphabet(alphabet_root)
+    filename1 = "arrayOfHiraganaAlphabets.txt"
+    filename2 = "arrayOfKatakanaAlphabets.txt"
+    button_frame_for_alphabets = Frame(alphabet_root)
+    hiragana_frame = Frame(alphabet_root)
+    katakana_frame = Frame(alphabet_root)
+    button_frame_for_alphabets.grid(row=0, column=0)
 
-    hiragana_alphabet_frame = Frame(hira_root)
-    hiragana_alphabet_frame.pack(padx=50, pady=50)
-    with io.open(filename, "r", encoding="utf-8") as f:
-        text = f.read()
-    hiragana_alphas = []
-    for te in text:
-        if te == "," or te == ' ':
-            continue
-        else:
-            hiragana_alphas.append(te)
+    for frame in (hiragana_frame, katakana_frame):
+        frame.grid(row=1, column=0)
 
-    HiraganaAlphabet(hiragana_alphabet_frame, hiragana_alphas)
-    hira_root.mainloop()
+    show_hiragana_button = Button(button_frame_for_alphabets, text="hiragana", command=lambda: P.show_alphabet(alphabet_root, hiragana_frame, filename1), font="Helvetica 20 italic")
+    show_hiragana_button.pack(side=LEFT, padx=20, fill="x")
+    show_katakana_button = Button(button_frame_for_alphabets, text="katakana", command=lambda:  P.show_alphabet(alphabet_root, katakana_frame, filename2), font="Helvetica 20 italic")
+    show_katakana_button.pack(side=LEFT, padx=20, fill="x")
+    alphabet_root.mainloop()
 
 
-# Similar to the hiragana_method, the katakana_method also creates a new window to display katakana characters
+# Similar to the alphabet_method, the katakana_method also creates a new window to display katakana characters
 
 root = Tk()  # root holds the tkinter functionality
 root.resizable(0, 0)  # The window is non resizeable as .... I just  wanted it this way
-root.title("SENSEI")   # The title of the application
+root.title("SENSEI")  # The title of the application
 
 # The title label -->
 my_title = Label(text="SENSEI", font="Helvetica 24 italic", fg="black", bg="white")
 my_title.pack(fill="x")
 
 # This creates the Hiragana frame which includes an image and a button to activate a new window
-hiragana_frame = Frame(root, borderwidth=20, padx=25, pady=30)
-hiragana_frame.pack(side=LEFT, anchor=NE)
-img = Image.open("images/hiragana_chi.jpg")   # This opens the image for operations using the PIL module we imported
-img = img.resize((200, 200), Image.ANTIALIAS)   # Resizes the image
+alphabet_frame = Frame(root, borderwidth=20, padx=25, pady=30)
+alphabet_frame.pack(side=LEFT, anchor=NE)
+img = Image.open("images/hiragana_chi.jpg")  # This opens the image for operations using the PIL module we imported
+img = img.resize((200, 200), Image.ANTIALIAS)  # Resizes the image
 img = ImageTk.PhotoImage(img)
 
 # Hiragana label -->
-hiragana_image_label = Label(hiragana_frame, image=img, relief=SUNKEN)
-hiragana_image_label.image = img
-hiragana_image_label.pack()
+alphabet_image_label = Label(alphabet_frame, image=img, relief=SUNKEN)
+alphabet_image_label.image = img
+alphabet_image_label.pack()
 
 # Hiragana button -->
-hiragana_button = Button(hiragana_frame, text="Practice Hiragana >>", relief=SOLID, font="Nunito 12 italic", bg="white",
-                         command=hiragana_method)
-hiragana_button.pack(expand=True, fill="both")
-
-
-# Katakana frame, includes an image and a button to create a new window
-katakana_frame = Frame(root, borderwidth=20, padx=25, pady=30)
-katakana_frame.pack(side=LEFT, anchor=NE)
-
-img = Image.open("images/katakana.png")
-img = img.resize((200, 200), Image.ANTIALIAS)
-img = ImageTk.PhotoImage(img)
-
-# Katakana label -->
-katakana_image_label = Label(katakana_frame, image=img, relief=SUNKEN)
-katakana_image_label.image = img
-katakana_image_label.pack()
-
-# Katakana button -->
-katakana_button = Button(katakana_frame, text="Practice Katakana >>", relief=SOLID, font="Nunito 12 italic", bg="white")
-katakana_button.pack(expand=True, fill="both")
-
+alphabet_button = Button(alphabet_frame, text="Practice Hiragana and Katakana", relief=SOLID, font="Nunito 12 italic",
+                         bg="white", command=alphabet_method)
+alphabet_button.pack(expand=True, fill="both")
 
 # Conversation frame used to display basic conversation notes.
 conversation_notes_frame = Frame(root, borderwidth=20, padx=25, pady=30)
@@ -94,7 +76,6 @@ conversation_image_label.pack()
 conversation_button = Button(conversation_notes_frame, text="Conversation in Japanese >>", relief=SOLID,
                              font='Nunito 12 italic', bg="white")
 conversation_button.pack(expand=True, fill="both")
-
 
 # Revision sequence initiation frame includes a basic revisit of concepts
 revision_sequence_frame = Frame(root, borderwidth=20, padx=25, pady=30)
